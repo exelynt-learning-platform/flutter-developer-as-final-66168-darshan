@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'login_screen.dart';
-
+import 'dart:async';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,6 +17,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   late AnimationController _controller;
   late Animation<double> _animation;
+  Timer? _timer;
 
 
   @override
@@ -39,37 +40,38 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
 
-  void checkUser() async {
+  void checkUser() {
 
-    await Future.delayed(
+    _timer = Timer(
       const Duration(seconds: 2),
+          () {
+
+        if (!mounted) return;
+
+        final user = FirebaseAuth.instance.currentUser;
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => user != null
+                ? const EmployeeDashboardScreen()
+                : const LoginScreen(),
+          ),
+        );
+
+      },
     );
 
-    if (!mounted) return;
-
-    User? user;
-    try {
-      user = FirebaseAuth.instance.currentUser;
-    } catch (e) {
-      user = null;
-    }
-
-    if (!mounted) return;
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => user != null
-            ? const EmployeeDashboardScreen()
-            : const LoginScreen(),
-      ),
-    );
   }
 
 
   @override
   void dispose() {
+
+    _timer?.cancel();
+
     _controller.dispose();
+
     super.dispose();
   }
 
