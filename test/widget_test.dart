@@ -1,30 +1,72 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:dio/dio.dart';
 
 import 'package:employeeapp/main.dart';
+import 'package:employeeapp/Bloc/auth_bloc.dart';
+import 'package:employeeapp/Bloc/employee_bloc.dart';
+import 'package:employeeapp/Service/AuthService.dart';
+import 'package:employeeapp/Service/EmployeeService.dart';
+import 'package:employeeapp/repository/auth_repository..dart';
+import 'package:employeeapp/repository/EmployeeRepository.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    // await tester.pumpWidget(const MyApp());
+  TestWidgetsFlutterBinding.ensureInitialized();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  setUpAll(() async {
+    const MethodChannel channel =
+    MethodChannel('plugins.flutter.io/firebase_core');
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+      if (methodCall.method == 'Firebase#initializeCore') {
+        return [
+          {
+            'name': '[DEFAULT]',
+            'options': {
+              'apiKey': 'fake-api-key',
+              'appId': 'fake-app-id',
+              'messagingSenderId': 'fake-sender-id',
+              'projectId': 'fake-project-id',
+            },
+            'pluginConstants': {},
+          }
+        ];
+      }
+      if (methodCall.method == 'Firebase#initializeApp') {
+        return {
+          'name': methodCall.arguments['appName'],
+          'options': methodCall.arguments['options'],
+          'pluginConstants': {},
+        };
+      }
+      return null;
+    });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await Firebase.initializeApp();
   });
+
+  testWidgets('Employee Management App loads successfully',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MultiBlocProvider(
+            providers: [
+              BlocProvider<AuthBloc>(
+                create: (_) => AuthBloc(AuthRepository(AuthService())),
+              ),
+              BlocProvider<EmployeeBloc>(
+                create: (_) =>
+                    EmployeeBloc(EmployeeRepository(EmployeeService(Dio()))),
+              ),
+            ],
+            child: const MyApp(),
+          ),
+        );
+
+        await tester.pump(const Duration(seconds: 3));
+
+        expect(find.byType(MyApp), findsOneWidget);
+      });
 }

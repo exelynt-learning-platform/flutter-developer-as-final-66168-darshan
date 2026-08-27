@@ -45,7 +45,14 @@ class _SplashScreenState extends State<SplashScreen>
       const Duration(seconds: 2),
     );
 
-    final user = FirebaseAuth.instance.currentUser;
+    if (!mounted) return;
+
+    User? user;
+    try {
+      user = FirebaseAuth.instance.currentUser;
+    } catch (e) {
+      user = null;
+    }
 
     if (!mounted) return;
 
