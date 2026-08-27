@@ -1,8 +1,8 @@
-import 'package:bloc/bloc.dart';
-import 'package:employeeapp/model/EmployeeModel.dart';
-import 'package:employeeapp/repository/EmployeeRepository.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:employeeapp/model/employee_model.dart';
+import 'package:employeeapp/repository/employee_repository.dart';
 
+import 'package:meta/meta.dart';
 
 part 'employee_event.dart';
 part 'employee_state.dart';

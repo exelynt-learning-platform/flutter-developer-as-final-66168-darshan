@@ -1,4 +1,4 @@
-import 'package:employeeapp/Screen_UI/EmployeeDashboardScreen.dart';
+import 'package:employeeapp/screens/employee_dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

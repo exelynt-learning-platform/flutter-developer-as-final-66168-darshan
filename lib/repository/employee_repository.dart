@@ -1,20 +1,19 @@
-import 'package:employeeapp/model/CountryModel.dart';
-import 'package:employeeapp/model/EmployeeModel.dart';
-
-import '../Service/EmployeeService.dart';
+import 'package:employeeapp/model/country_model.dart';
+import 'package:employeeapp/model/employee_model.dart';
+import 'package:employeeapp/services/employee_service.dart';
 
 
 
 class EmployeeRepository {
 
-  final EmployeeService service;
+  final EmployeeService services;
 
-  EmployeeRepository(this.service);
+  EmployeeRepository(this.services);
 
 
   Future<List<EmployeeModel>> getEmployees() async {
 
-    final response = await service.getEmployees();
+    final response = await services.getEmployees();
 
     return (response.data as List)
         .map((e) => EmployeeModel.fromJson(e))
@@ -25,7 +24,7 @@ class EmployeeRepository {
 
   Future<EmployeeModel> getEmployeeById(String id) async {
 
-    final response = await service.getEmployeeById(id);
+    final response = await services.getEmployeeById(id);
 
     return EmployeeModel.fromJson(response.data);
 
@@ -36,7 +35,7 @@ class EmployeeRepository {
       EmployeeModel employee) async {
 
     final response =
-    await service.addEmployee(employee.toJson());
+    await services.addEmployee(employee.toJson());
 
     return EmployeeModel.fromJson(response.data);
 
@@ -47,7 +46,7 @@ class EmployeeRepository {
       EmployeeModel employee) async {
 
     final response =
-    await service.updateEmployee(
+    await services.updateEmployee(
       employee.id,
       employee.toJson(),
     );
@@ -59,14 +58,14 @@ class EmployeeRepository {
 
   Future<void> deleteEmployee(String id) async {
 
-    await service.deleteEmployee(id);
+    await services.deleteEmployee(id);
 
   }
 
 
   Future<List<CountryModel>> getCountries() async {
 
-    final response = await service.getCountries();
+    final response = await services.getCountries();
 
     return (response.data as List)
         .map((e) => CountryModel.fromJson(e))

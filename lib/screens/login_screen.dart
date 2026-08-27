@@ -1,11 +1,10 @@
-import 'package:employeeapp/Bloc/auth_bloc.dart';
-import 'package:employeeapp/Screen_UI/EmployeeDashboardScreen.dart';
-import 'package:employeeapp/Screen_UI/RegisterScreen.dart';
-import 'package:employeeapp/Screen_UI/forgot_password_screen.dart';
-import 'package:employeeapp/Service/google_auth_service.dart';
-import 'package:flutter/material.dart';
+import 'package:employeeapp/bloc/auth_bloc.dart';
+import 'package:employeeapp/screens/employee_dashboard_screen.dart';
+import 'package:employeeapp/screens/register_screen.dart';
+import 'package:employeeapp/screens/forgot_password_screen.dart';
+ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:employeeapp/services/google_auth_service.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 

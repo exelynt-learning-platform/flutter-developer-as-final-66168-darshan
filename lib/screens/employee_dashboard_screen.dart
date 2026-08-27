@@ -1,5 +1,5 @@
-import 'package:employeeapp/Bloc/employee_bloc.dart';
-import 'package:employeeapp/Screen_UI/AddEmployeeScreen.dart';
+import 'package:employeeapp/bloc/employee_bloc.dart';
+import 'package:employeeapp/screens/add_employee_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'login_screen.dart';

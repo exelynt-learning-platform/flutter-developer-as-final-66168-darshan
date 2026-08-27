@@ -1,5 +1,5 @@
-import 'package:employeeapp/Bloc/employee_bloc.dart';
-import 'package:employeeapp/model/EmployeeModel.dart';
+import 'package:employeeapp/bloc/employee_bloc.dart';
+import 'package:employeeapp/model/employee_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
