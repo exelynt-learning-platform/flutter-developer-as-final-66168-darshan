@@ -41,29 +41,33 @@ class _SplashScreenState extends State<SplashScreen>
 
 
   void checkUser() {
-
     _timer = Timer(
       const Duration(seconds: 2),
           () {
-
         if (!mounted) return;
 
-        final user = FirebaseAuth.instance.currentUser;
+        try {
+          final user = FirebaseAuth.instance.currentUser;
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => user != null
-                ? const EmployeeDashboardScreen()
-                : const LoginScreen(),
-          ),
-        );
-
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => user != null
+                  ? const EmployeeDashboardScreen()
+                  : const LoginScreen(),
+            ),
+          );
+        } catch (_) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const LoginScreen(),
+            ),
+          );
+        }
       },
     );
-
   }
-
 
   @override
   void dispose() {
